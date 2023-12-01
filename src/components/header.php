@@ -1,3 +1,6 @@
+<?php
+require_once $_SERVER["DOCUMENT_ROOT"] . '/interact/config.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +9,6 @@
     <link href="/interact/dist/output.css" rel="stylesheet">
     <title>PHP Login System</title>
 </head>
-<body>
+<body class="bg-slate-50">
 
 
