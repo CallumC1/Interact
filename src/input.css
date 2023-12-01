@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch */
+
+.userAuth {
+    @apply bg-slate-50  w-[22rem]  px-10 py-10  ;
+}
+
+.userAuth form span:nth-child(-n+4) {
+    @apply mt-2 mb-0.5 flex flex-col;
+}
+
+.userAuth form span:nth-child(-n+4) input{
+    @apply py-2 pl-2 rounded-lg text-sm transition ease-in-out duration-200 border-2 focus:outline-none hover:border-green-500 focus:border-green-500;
+}
+
+.userAuth form span:nth-child(-n+4) label {
+    @apply text-sm text-gray-500 ml-1;
+}
+
+.userAuth form input[type=submit] {
+    @apply mt-5 py-2 drop-shadow-md rounded-lg text-white font-semibold transition ease-in-out duration-200 bg-green-600 hover:bg-green-500 cursor-pointer;
+}
+
