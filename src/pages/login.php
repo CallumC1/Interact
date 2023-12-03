@@ -15,7 +15,7 @@
     
             <span class="">
                 <label for="password">Password</label>
-                <input type="password" name="password" id="password" placeholder="Create a password">
+                <input type="password" name="password" id="password" placeholder="Your password">
             </span>
     
             <input type="submit" class="" value="Login">
