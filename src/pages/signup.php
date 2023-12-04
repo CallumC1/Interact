@@ -8,7 +8,7 @@
         
         <a href="#" id="goBack" class="ml-1">Go back</a>
         <p class="font-semibold text-3xl sm:text-xl my-4 ml-1">Create Your Account</p>
-        <form method="POST" action="./handlers/" class="flex flex-col gap-2.5">
+        <form method="POST" action="/interact/src/includes/signup.inc.php" class="flex flex-col gap-2.5">
     
             <span class="">
                 <label for="firt_name">First Name</label>
@@ -30,7 +30,7 @@
                 <input type="password" name="password" id="password" placeholder="Create a password">
             </span>
     
-            <input type="submit" class="" value="Sign up">
+            <input type="submit" name="submit" class="" value="Sign up">
     
         </form>
     

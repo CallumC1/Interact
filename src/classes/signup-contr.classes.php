@@ -1,6 +1,7 @@
 <?php
+include_once($_SERVER["DOCUMENT_ROOT"] . "/interact/src/classes/signup.classes.php");
 
-class SignupContr {
+class SignupContr extends Signup {
 
     private $first_name;
     private $last_name;
@@ -12,6 +13,31 @@ class SignupContr {
         $this->last_name = $last_name;
         $this->email = $email;
         $this->password = $password;
+    }
+
+    public function signupUser() {
+        if ($this->emptyInput() == false) {
+            // header("Location: ../signup.php?error=emptyInput");
+            echo("Empty input");
+            die();
+        }
+        if ($this->invalidName() == false) {
+            // header("Location: ../signup.php?error=invalidName");
+            echo("Invalid name");
+            die();
+        }
+        if ($this->invalidEmail() == false) {
+            // header("Location: ../signup.php?error=invalidEmail");
+            echo("Invalid email");
+            die();
+        }
+        if ($this->emailTaken() == false) {
+            // header("Location: ../signup.php?error=alreadyUser");
+            echo("Email taken");
+            die();
+        }
+
+        $this->insertUser($this->first_name, $this->last_name, $this->email, $this->password);
     }
 
     // Check for empty inputs.
@@ -37,7 +63,7 @@ class SignupContr {
         }
         return $result;
     }
-
+    
     private function invalidEmail() {
         $result;
         if(!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
@@ -45,6 +71,17 @@ class SignupContr {
         }
         else {
             $result = true;
+        }
+        return $result;
+    }
+
+    private function emailTaken() {
+        $result;
+        if(!$this->checkUserEmail($this->email)) {
+            $result = false; // Return false if the email is already taken.
+        }
+        else {
+            $result = true; // Return true if the email is not taken.
         }
         return $result;
     }
