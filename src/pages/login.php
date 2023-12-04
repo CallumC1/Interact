@@ -5,6 +5,7 @@
 
 <div class="fullContainer">
     <div class="userAuth">
+        <a href="#" id="goBack" class="ml-1">Go back</a>
         <p class="font-semibold text-3xl sm:text-xl my-4 ml-1">Login To Your Account</p>
         <form method="POST" action="./handlers/" class="flex flex-col gap-2.5">
     
@@ -31,3 +32,4 @@
 
 <!-- Import Footer -->
 <?php include_once($_SERVER["DOCUMENT_ROOT"] . "/interact/src/components/footer.php") ?>
+<script src="/interact/src/assets/js/goBack.js" ></script>
