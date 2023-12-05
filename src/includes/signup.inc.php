@@ -1,9 +1,7 @@
 <?php
-    echo("test0");
 
 if($_SERVER["REQUEST_METHOD"])
 {
-    echo("test1");
 
     $first_name = $_POST["first_name"];
     $last_name = $_POST["last_name"];

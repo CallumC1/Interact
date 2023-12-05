@@ -3,6 +3,7 @@
 
 class Signup extends databaseHandler {
 
+    // Check if users email exists in database.
     protected function checkUserEmail($email) {
         $conn = $this->connect();
         $sql = "SELECT * FROM users WHERE user_email = ?";
@@ -49,6 +50,7 @@ class Signup extends databaseHandler {
 
         // Return true if the user was created successfully.
         $resultCheck = $stmt->affected_rows > 0;
+        return $resultCheck;
     }
 
 }
