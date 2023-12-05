@@ -40,7 +40,6 @@ class Login extends databaseHandler {
             $sql = "SELECT * FROM users WHERE user_email = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("s", $email);
-            $row = $stmt->get_result()->fetch_assoc();
 
             // Execute & check if stmt failed.
             if (!$stmt->execute()) {
@@ -49,6 +48,7 @@ class Login extends databaseHandler {
                 die();
             }
 
+            $row = $stmt->get_result()->fetch_assoc();
 
             session_start();
             $_SESSION["user_data"] = [
@@ -59,6 +59,7 @@ class Login extends databaseHandler {
             ];
 
             $stmt->close();
+            header("Location: /interact/src/pages/index.php?login=success");
 
 
         }
