@@ -17,23 +17,19 @@ class SignupContr extends Signup {
 
     public function signupUser() {
         if ($this->emptyInput() == false) {
-            // header("Location: ../signup.php?error=emptyInput");
-            echo("Empty input");
+            header("Location: /interact/src/pages/signup.php?error=emptyInput");
             die();
         }
         if ($this->invalidName() == false) {
-            // header("Location: ../signup.php?error=invalidName");
-            echo("Invalid name");
+            header("Location: /interact/src/pages/signup.php?error=invalidName");
             die();
         }
         if ($this->invalidEmail() == false) {
-            // header("Location: ../signup.php?error=invalidEmail");
-            echo("Invalid email");
+            header("Location: /interact/src/pages/signup.php?error=invalidEmail");
             die();
         }
-        if ($this->emailTaken() == false) {
-            // header("Location: ../signup.php?error=alreadyUser");
-            echo("Email taken");
+        if ($this->emailTaken() == true) {
+            header("Location: /interact/src/pages/signup.php?error=takenUser");
             die();
         }
 
@@ -76,13 +72,7 @@ class SignupContr extends Signup {
     }
 
     private function emailTaken() {
-        $result;
-        if(!$this->checkUserEmail($this->email)) {
-            $result = false; // Return false if the email is already taken.
-        }
-        else {
-            $result = true; // Return true if the email is not taken.
-        }
+        $result = $this->checkUserEmail($this->email); // Return true if the email is taken.
         return $result;
     }
 

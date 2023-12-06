@@ -14,7 +14,7 @@ class Signup extends databaseHandler {
 
         if (!$stmt->execute()) {
             $stmt->close();
-            header("Location: ../signup.php?error=stmtfailed");
+            header("Location: /interact/src/pages/signup.php?error=stmtfailed");
             die();
         }
         $result = $stmt->get_result(); // Get the result from the query.
@@ -22,10 +22,10 @@ class Signup extends databaseHandler {
         $resultCheck;
 
         if($result->num_rows > 0) { // If there is a result, then the email is already taken.
-            $resultCheck = false; // Return false if the email is already taken.
+            $resultCheck = true; // Return true if the email is not taken.
         }
         else {
-            $resultCheck = true; // Return true if the email is not taken.
+            $resultCheck = false; // Return false if the email is already taken. 
         }
         $stmt->close();
 
@@ -44,7 +44,7 @@ class Signup extends databaseHandler {
 
         if (!$stmt->execute()) {
             $stmt->close();
-            header("Location: ../signup.php?error=stmtfailed");
+            header("Location: /interact/src/pages/signup.php?error=stmtfailed");
             die();
         }
 

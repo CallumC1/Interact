@@ -15,13 +15,13 @@ class Login extends databaseHandler {
 
         if (!$stmt->execute()) {
             $stmt->close();
-            header("Location: ../login.php?error=stmtfailed");
+            header("Location: /interact/src/pages/login.php?error=stmtfailed");
             die();
         }
 
         if ($stmt->affected_rows == 0) {
             $stmt->close();
-            header("Location: ../login.php?error=usernotfound");
+            header("Location: /interact/src/pages/login.php?error=usernotfound");
             die();
         }
         
@@ -32,7 +32,7 @@ class Login extends databaseHandler {
 
 
         if ($check_password == false) {
-            header("Location: ../login.php?error=incorrectpassword");
+            header("Location: /interact/src/pages/login.php?error=incorrectpassword");
             die();
         } elseif ($check_password == true) {
             
@@ -44,7 +44,7 @@ class Login extends databaseHandler {
             // Execute & check if stmt failed.
             if (!$stmt->execute()) {
                 $stmt->close();
-                header("Location: ../login.php?error=stmtfailed");
+                header("Location: /interact/src/pages/login.php?error=stmtfailed");
                 die();
             }
 

@@ -1,5 +1,14 @@
 <!-- Import Header -->
-<?php include_once($_SERVER["DOCUMENT_ROOT"] . "/interact/src/components/header.php") ?>
+
+<?php 
+session_start();
+include_once($_SERVER["DOCUMENT_ROOT"] . "/interact/src/components/header.php?error=alreadyLoggedIn");
+
+if (isset($_SESSION["user_id"])) {
+    header("Location: /interact/src/pages/index.php");
+    exit();
+}
+?>
 
 <!-- Login Form -->
 
