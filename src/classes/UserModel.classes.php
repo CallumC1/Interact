@@ -82,21 +82,16 @@ class UserModel extends databaseHandler {
         $password_hashed = $row["user_password_hash"];
         $check_password = password_verify($password, $password_hashed);
 
+        // Check if the given password matches the hashed password in the database.
         if($check_password == false) {
             echo("Incorrect Password");
             exit();
+        } elseif ($check_password == true) {
+            return $row;
+        } else {
+            echo("Error in getUser statement.");
+            exit();
         }
-
-        // Assign session variables.
-        session_start();
-        $_SESSION["user_data"] = [
-            "user_id" => $row["user_id"],
-            "user_first_name" => $row["user_first_name"],
-            "user_last_name" => $row["user_last_name"],
-            "user_email" => $row["user_email"],
-        ];
-
-
 
     }
 

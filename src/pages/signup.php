@@ -1,13 +1,14 @@
 <!-- Import Header -->
 
 <?php 
-session_start();
 include_once($_SERVER["DOCUMENT_ROOT"] . "/interact/src/components/header.php");
 
 if (isset($_SESSION["user_data"]["user_id"])) {
     header("Location: /interact/src/pages/index.php?error=alreadyLoggedIn");
     exit();
 }
+
+$error = isset($_GET["error"]) ? $_GET["error"] : "";
 ?>
 
 <!-- Signup Form -->
@@ -38,6 +39,20 @@ if (isset($_SESSION["user_data"]["user_id"])) {
                 <label for="password">Password</label>
                 <input type="password" name="password" id="password" placeholder="Create a password">
             </span>
+
+            <div>
+                <?php
+                    if ($error == "emptyField") {
+                        echo "<p class='text-red-500 text-sm font-semibold'>Please fill in all fields.</p>";
+                    } else if ($error == "invalidEmail") {
+                        echo "<p class='text-red-500 text-sm font-semibold'>Please enter a valid email address.</p>";
+                    } else if ($error == "userExists") {
+                        echo "<p class='text-red-500 text-sm font-semibold'>User already exists.</p>";
+                    } else if ($error == "stmtFailed") {
+                        echo "<p class='text-red-500 text-sm font-semibold'>Something went wrong. Please try again.</p>";
+                    }
+                ?>
+            </div>
     
             <input type="submit" name="submit" class="" value="Sign up">
     
