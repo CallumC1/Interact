@@ -9,13 +9,11 @@ if($_SERVER["REQUEST_METHOD"])
     $password = $_POST["password"];
 
 
-    // Instantiate SignupContr class
-
     include_once($_SERVER["DOCUMENT_ROOT"] . "/interact/src/classes/databaseHandler.classes.php");
-    include_once($_SERVER["DOCUMENT_ROOT"] . "/interact/src/classes/signup.classes.php");
-    include_once($_SERVER["DOCUMENT_ROOT"] . "/interact/src/classes/signup-contr.classes.php");
-    $signup = new SignupContr($first_name, $last_name, $email, $password);
+    include_once($_SERVER["DOCUMENT_ROOT"] . "/interact/src/classes/User.classes.php");
+    include_once($_SERVER["DOCUMENT_ROOT"] . "/interact/src/classes/UserModel.classes.php");
+    $user = new User();
     
-    $signup->signupUser();
+    $user->signupUser($first_name, $last_name, $email, $password);
 
 }

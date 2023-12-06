@@ -17,4 +17,9 @@ class databaseHandler {
             die();
         }
     }
+
+    protected function disconnect($databaseHandler) {
+        $databaseHandler->close();
+    }
+
 }
