@@ -56,7 +56,7 @@ function fetchMessages() {
     });
 }
 // Fetch messages every x seconds
-setInterval(fetchMessages, 3000);
+setInterval(fetchMessages, 2000);
 // Fetch messages on page load
 fetchMessages();
 
