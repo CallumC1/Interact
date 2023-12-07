@@ -34,4 +34,20 @@ if ($action == "getMsgs") {
         array_push($allMsgs, $msg);
     }
     echo(json_encode(["result" => $allMsgs]));
+
+} elseif ($action == "sendMsg") {
+    $messageHandler = new MessageHandler();
+    $sender_id = $_POST["sender_id"];
+    $message = $_POST["message"];
+    
+    if ($messageHandler->sendMessage($sender_id, $message)) {
+        echo(json_encode(["result" => "success"]));
+    } else {
+        echo(json_encode(["result" => "failed"]));
+    }
+
+
+} else {
+    echo("Error: No action specified.");
+    die();
 }

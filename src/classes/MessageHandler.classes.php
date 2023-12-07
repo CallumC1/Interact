@@ -13,9 +13,11 @@ class MessageHandler extends MessageModel {
         }
 
         if ($this->insertMessage($sender_id, $message)) {
-            header("Location: /interact/src/pages/dashboard.php?msg=success");
+            return true;
+            // header("Location: /interact/src/pages/dashboard.php?msg=success");
         } else {
-            header("Location: /interact/src/pages/dashboard.php?msg=failed");
+            return false;
+            // header("Location: /interact/src/pages/dashboard.php?msg=failed");
         }
     }
 

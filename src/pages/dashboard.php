@@ -39,7 +39,7 @@ $email = $user_data["user_email"];
         <!-- Create Message -->
         <form action="/interact/src/includes/sendmsg.inc.php" method="POST" class="flex my-5 h-fit">
             <textarea id="textInput" name="textInput" placeholder="Type here" class=" px-2 w-full border-2 border-gray-300 overflow-hidden"></textarea>
-            <input type="submit" class="flex-shrink-0 ml-2 w-12 h-12 rounded-lg bg-green-600 text-2xl font-semibold cursor-pointer" value=">">
+            <input id="submitBtn" type="submit" class="flex-shrink-0 ml-2 w-12 h-12 rounded-lg bg-green-600 text-2xl font-semibold cursor-pointer" value=">">
         </form>
 
     </div>
@@ -108,6 +108,42 @@ $email = $user_data["user_email"];
     fetchMessages();
 </script>
 
+<script>
+    var submitBtn = document.getElementById("submitBtn");
+    
+    submitBtn.addEventListener("click", function(event) {
+    submitMessage();
+    event.preventDefault();
+    });
+
+    function submitMessage() {
+        // Ensure that special characters are properly encoded
+        var message = encodeURIComponent(document.getElementById("textInput").value);
+        var sender_id = <?= $user_data["user_id"]; ?>;
+        fetch("/interact/src/includes/ajaxHandler.inc.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: "action=sendMsg&message=" + message + "&sender_id=" + sender_id,
+        })
+        .then (response => response.json())
+        .then (data => {
+            console.log(data);
+            if (data.result == "success") {
+                console.log("Message sent successfully.");
+                document.getElementById("textInput").value = "";
+                fetchMessages();
+            } else {
+                console.log("Message failed to send.");
+            }
+        })
+        .catch (error => {
+            console.log(error);
+        });
+    
+    }
+</script>
 
 <script>
     // Text box expand JS
