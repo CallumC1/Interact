@@ -28,3 +28,14 @@
     @apply bg-green-600 text-white font-semibold mt-5 py-4 drop-shadow-md rounded-sm hover:bg-green-500 cursor-pointer transition ease-in-out duration-200;
 }
 
+.message-card {
+    @apply bg-slate-100 px-3 py-2 my-3;
+}
+
+.message-user  {
+    @apply font-semibold;
+}
+
+.message-content {
+    @apply bg-slate-200 px-1 py-2;
+}

@@ -1,11 +1,10 @@
 <!-- Import Header -->
 
 <?php 
-session_start();
-include_once($_SERVER["DOCUMENT_ROOT"] . "/interact/src/components/header.php?error=alreadyLoggedIn");
+include_once($_SERVER["DOCUMENT_ROOT"] . "/interact/src/components/header.php");
 
-if (isset($_SESSION["user_id"])) {
-    header("Location: /interact/src/pages/index.php");
+if (isset($_SESSION["user_data"]["user_id"])) {
+    header("Location: /interact/src/pages/index.php?error=alreadyLoggedIn");
     exit();
 }
 ?>
