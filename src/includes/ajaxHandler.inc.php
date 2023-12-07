@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 include_once($_SERVER["DOCUMENT_ROOT"] . "/interact/src/classes/databaseHandler.classes.php");
 include_once($_SERVER["DOCUMENT_ROOT"] . "/interact/src/classes/MessageModel.classes.php");
 include_once($_SERVER["DOCUMENT_ROOT"] . "/interact/src/classes/MessageHandler.classes.php");
@@ -37,7 +37,7 @@ if ($action == "getMsgs") {
 
 } elseif ($action == "sendMsg") {
     $messageHandler = new MessageHandler();
-    $sender_id = $_POST["sender_id"];
+    $sender_id = $_SESSION["user_data"]["user_id"];
     $message = $_POST["message"];
     
     if ($messageHandler->sendMessage($sender_id, $message)) {
