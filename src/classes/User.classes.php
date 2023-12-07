@@ -56,7 +56,6 @@ class User extends UserModel {
             header("Location: /interact/src/pages/dashboard.php?msg=loginSuccess");
         }
 
-
     }
 
 }

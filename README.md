@@ -13,5 +13,12 @@ CREATE TABLE `users` (
   `user_email` varchar(150) NOT NULL,
   `user_password_hash` varchar(255) NOT NULL,
   `user_role` varchar(50) NOT NULL DEFAULT 'user'
-)
+);
+
+CREATE TABLE `messages` (
+  `message_id` INT PRIMARY KEY AUTO_INCREMENT,
+  `sender_id` INT NOT NULL,
+  `message` TEXT NOT NULL,
+  FOREIGN KEY (`sender_id`) REFERENCES `users`(`user_id`)
+);
 ```

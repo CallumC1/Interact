@@ -95,4 +95,23 @@ class UserModel extends databaseHandler {
 
     }
 
+    public static function userByID($user_id) {
+        $db = new databaseHandler();
+        $conn = $db->connect();
+        $sql = "SELECT user_email, user_first_name, user_last_name FROM users WHERE user_id = ?";
+        $stmt = $conn->prepare($sql);
+
+        $stmt->bind_param("i", $user_id);
+
+        if (!$stmt->execute()) {
+            $stmt->close();
+            echo("Error in getUser statement.");
+            die();
+        }
+
+        $result = $stmt->get_result()->fetch_assoc();
+        
+        return $result;
+    }
+
 }
