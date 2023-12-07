@@ -19,9 +19,20 @@ class MessageHandler extends MessageModel {
         }
     }
 
+    public function getAllMessages() {
+        // Get messages from database
+        $result = $this->getAllMessagesDb();
+        return $result;
+    }
+
+    public function getMessagesSince($lastMessageId) {
+        // Get new messages from database
+        $result = $this->getMessagesSinceDb($lastMessageId);
+        return $result;
+    }
+
     public function displayMessages() {
         // Display messages on page by fetching from model.
-        // TODO: Return true if successful, false if not
 
         $result = $this->getMessagesDb();
         while ($row = $result->fetch_assoc()) {

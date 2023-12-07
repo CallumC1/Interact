@@ -21,10 +21,29 @@ class MessageModel extends databaseHandler {
         return true;
     }
 
-    protected function getMessagesDb() {
+    protected function getAllMessagesDb() {
         $sql = "SELECT * FROM messages ORDER BY message_id";
         $conn = $this->connect();
         $stmt = $conn->prepare($sql);
+
+        if (!$stmt->execute()) {
+            $stmt->close();
+            echo("Error in getMessages statement.");
+            return false;
+            die();
+        }
+
+        $result = $stmt->get_result();
+        $stmt->close();
+        return $result;
+    }
+
+    protected function getMessagesSinceDb($lastMessageId) {
+        $sql = "SELECT * FROM messages WHERE message_id > ? ORDER BY message_id";
+        $conn = $this->connect();
+        $stmt = $conn->prepare($sql);
+
+        $stmt->bind_param("i", $lastMessageId);
 
         if (!$stmt->execute()) {
             $stmt->close();

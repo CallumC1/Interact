@@ -105,7 +105,7 @@ class UserModel extends databaseHandler {
 
         if (!$stmt->execute()) {
             $stmt->close();
-            echo("Error in getUser statement.");
+            echo("Error in userByID statement.");
             die();
         }
 
