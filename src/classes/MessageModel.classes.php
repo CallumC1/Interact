@@ -57,4 +57,41 @@ class MessageModel extends databaseHandler {
         return $result;
     }
 
+    // Add a like
+    // Could maybe be moved to its own likeModel class
+
+    protected function insertLike($messageId, $user_id) {
+
+        $sql = "INSERT INTO likes (message_id, user_id) VALUES (?, ?)";
+        $conn = $this->connect();
+        $stmt = $conn->prepare($sql);
+
+        $stmt->bind_param("ii", $messageId, $user_id);
+
+        if (!$stmt->execute()) {
+            $stmt->close();
+            echo("Error in insertLike statement.");
+            return false;
+            die();
+        }
+
+        $stmt->close();
+        return true;
+    }
+
+    protected function userHasLiked($messageId, $userId) {
+        $sql = "SELECT * FROM likes WHERE message_id = ? AND user_id = ?";
+        $conn = $this->connect();
+        $stmt = $conn->prepare($sql);
+    
+        $stmt->bind_param("ii", $messageId, $userId);
+        $stmt->execute();
+    
+        $result = $stmt->get_result();
+    
+        $stmt->close();
+    
+        return $result->num_rows > 0; // true if user has liked, false if not
+    }
+
 }

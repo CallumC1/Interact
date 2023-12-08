@@ -17,6 +17,11 @@ function fetchMessages() {
             return;
         } 
 
+        if (data.result == "noMsgs") {
+            console.log("No messages in db.")
+            return;
+        } 
+
         if (lastMessageId == null) {
             console.log("Fetching all messages.");
             msgContainer.innerHTML = "";
@@ -34,6 +39,9 @@ function fetchMessages() {
                     msgDiv.innerHTML = component;
 
                     // Set content based on data
+                    // msgDiv.querySelector('.message-id').innerText = msg.message_id;
+                    msgDiv.dataset.messageid = msg.message_id;
+
                     msgDiv.querySelector('.message-user').innerText = msg.fullname;
                     msgDiv.querySelector('.message-content').innerText = msg.message;
 
@@ -44,9 +52,13 @@ function fetchMessages() {
                     // console.log(lastMessageId);
                 });
 
+
                 // Scroll to bottom of messages by default
                 var msgScroll = document.getElementById("msgContainer");
                 msgScroll.scrollTop = msgScroll.scrollHeight;
+
+                // Once generated add like functionality.
+                addFunctionality();
 
             })
             .catch(error => console.error('Error loading template:', error));
@@ -55,14 +67,11 @@ function fetchMessages() {
             console.log(error);
     });
 }
-// Fetch messages every x seconds
-setInterval(fetchMessages, 2000);
-// Fetch messages on page load
-fetchMessages();
+
 
 
 // 
-// Send messages
+// Send messages 
 // 
 
 var submitBtn = document.getElementById("submitBtn");
@@ -98,3 +107,35 @@ function submitMessage() {
     });
 
 }
+
+// Like Message Ajax
+
+function likeMessage($msgId) {
+    console.log("Like message function called.");
+    // Ensure that special characters are properly encoded
+    fetch("/interact/src/includes/ajaxHandler.inc.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: "action=likeMsg&msgId=" + $msgId,
+    })
+    .then (response => response.json())
+    .then (data => {
+        console.log(data);
+        if (data.result == "success") {
+            console.log("Message liked successfully.");
+        } else {
+            console.log("Message liked failed.");
+        }
+    })
+    .catch (error => {
+        console.log(error);
+    });
+
+}
+
+// Fetch messages every x seconds
+setInterval(fetchMessages, 5000);
+// Fetch messages on page load
+fetchMessages();

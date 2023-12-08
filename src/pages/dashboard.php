@@ -47,6 +47,7 @@ $email = $user_data["user_email"];
 
 
 <!-- import page JS scripts -->
+<script src="/interact/src/assets/js/likeMessage.js"></script>
 <script src="/interact/src/assets/js/ajaxMessages.js"></script>
 <script src="/interact/src/assets/js/dashboardScripts.js"></script>
 

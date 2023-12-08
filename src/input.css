@@ -32,10 +32,22 @@
     @apply bg-slate-100 px-3 py-2 my-3;
 }
 
+.message-id {
+    @apply hidden;
+}
+
 .message-user  {
     @apply font-semibold;
 }
 
 .message-content {
     @apply bg-slate-200 px-1 py-2;
+}
+
+.message-actions {
+    @apply flex gap-5 h-12;
+}
+
+.message-actions > img {
+    @apply w-5 h-auto cursor-pointer;
 }

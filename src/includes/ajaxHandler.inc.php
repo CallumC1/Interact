@@ -6,6 +6,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/interact/src/classes/MessageHandler.c
 
 $action = isset($_POST["action"]) ? $_POST["action"] : "";
 
+
 if ($action == "getMsgs") {
     $messageHandler = new MessageHandler();
 
@@ -20,6 +21,10 @@ if ($action == "getMsgs") {
 
     } else {
         $result = $messageHandler->getAllMessages();
+        if ($result->num_rows == 0) {
+            echo(json_encode(["result" => "noMsgs"]));
+            die();
+        }    
     }
 
     $allMsgs = [];
@@ -35,12 +40,28 @@ if ($action == "getMsgs") {
     }
     echo(json_encode(["result" => $allMsgs]));
 
-} elseif ($action == "sendMsg") {
+} 
+elseif ($action == "sendMsg") {
     $messageHandler = new MessageHandler();
     $sender_id = $_SESSION["user_data"]["user_id"];
     $message = $_POST["message"];
     
     if ($messageHandler->sendMessage($sender_id, $message)) {
+        echo(json_encode(["result" => "success"]));
+    } else {
+        echo(json_encode(["result" => "failed"]));
+    }
+}    
+// Like Messages
+elseif ($action == "likeMsg") {
+    $messageHandler = new MessageHandler();
+    $user_id = $_SESSION["user_data"]["user_id"];
+    $message_id = $_POST["msgId"];
+
+    $like = $messageHandler->likeMessage($message_id, $user_id);
+    if ($like == "alreadyLiked") {
+        echo(json_encode(["result" => "alreadyLiked"]));
+    } elseif ($like == "success") {
         echo(json_encode(["result" => "success"]));
     } else {
         echo(json_encode(["result" => "failed"]));

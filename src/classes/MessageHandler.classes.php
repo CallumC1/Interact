@@ -45,6 +45,22 @@ class MessageHandler extends MessageModel {
 
     }
 
+    public function likeMessage($messageId, $user_id) {
+        // for every like on a message, add a row to the likes table
+        // with the message id and the user id of the liker.
+        // Return true if successful, false if not
+
+        if ($this->userHasLiked($messageId, $user_id)) {
+            return "alreadyLiked";
+        }
+
+        if ($this->insertLike($messageId, $user_id)) {
+            return "success";
+        } else {
+            return "failed";
+        }
+    }
+
     private function hasContent($message) {
         // Check if message is empty
         // Return true if empty, false if not
@@ -54,4 +70,5 @@ class MessageHandler extends MessageModel {
             return true;
         }
     }
+
 }

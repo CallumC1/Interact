@@ -21,4 +21,12 @@ CREATE TABLE `messages` (
   `message` TEXT NOT NULL,
   FOREIGN KEY (`sender_id`) REFERENCES `users`(`user_id`)
 );
+
+CREATE TABLE likes (
+  like_id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT,
+  message_id INT,
+  FOREIGN KEY (user_id) REFERENCES users(user_id),
+  FOREIGN KEY (message_id) REFERENCES messages(message_id)
+);
 ```
