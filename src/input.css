@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 /* npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch */
+* {
+    @apply font-rethink;
+}
 
 .fullContainer {
     @apply w-screen h-screen flex flex-col justify-center items-center;
@@ -28,6 +31,7 @@
     @apply bg-green-600 text-white font-semibold mt-5 py-4 drop-shadow-md rounded-sm hover:bg-green-500 cursor-pointer transition ease-in-out duration-200;
 }
 
+/* Message Card Start */
 .message-card {
     @apply bg-slate-100 px-3 py-2 my-3;
 }
@@ -41,7 +45,7 @@
 }
 
 .message-content {
-    @apply bg-slate-200 px-1 py-2;
+    @apply bg-slate-200 px-1 py-2 font-medium break-words;
 }
 
 .message-actions {
@@ -55,3 +59,5 @@
 .like-btn {
     @apply w-5 h-auto cursor-pointer;
 }
+
+/* Message Card End */

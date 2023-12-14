@@ -2,7 +2,12 @@
 module.exports = {
   content: ["./src/**/*.{html,js,php}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'roboto': ['Roboto', 'sans-serif'],
+        'rethink': ['Rethink Sans', 'sans-serif'],
+      }
+    },
   },
   plugins: [],
 }
