@@ -21,7 +21,6 @@ function fetchMessages() {
         return response.json();
     })
     .then (data => {
-        console.log("Response data:", data);
         var msgContainer = document.getElementById("msgContainer");
 
         if (data.result == "noNewMsgs") {
@@ -94,7 +93,6 @@ function fetchMessages() {
                 // Log any other errors
                 console.error('Fetch error:', error);
                 console.error('Stack trace:', error.stack);
-                console.error('Server response:', responseText);
             }
     })
     .catch (error => {
@@ -105,7 +103,6 @@ function fetchMessages() {
             // Log any other errors
             console.error('Fetch error:', error);
             console.error('Stack trace:', error.stack);
-            console.error('Server response:', responseText);
         }
     })
     .finally(() => {
@@ -184,7 +181,5 @@ function likeMessage($msgId) {
 
 }
 
-// Fetch messages every x seconds
-// setInterval(fetchMessages, 5000);
 // Fetch messages on page load
 fetchMessages();

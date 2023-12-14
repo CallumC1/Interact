@@ -11,7 +11,7 @@ $action = isset($post_data["action"]) ? $post_data["action"] : "";
 
 header('Content-Type: application/json');
 if ($action == "getMsgs") {
-    set_time_limit(0); // Prevents script from timing out.
+    set_time_limit(3); // Prevents script from timing out.
     ob_implicit_flush(true); // Prevents script from buffering output.
     $messageHandler = new MessageHandler();
 
@@ -92,5 +92,6 @@ elseif ($action == "likeMsg") {
 
 } else {
     echo("Error: No action specified.");
+    echo(json_encode(["result" => "noAction", "messages" => []]));
     die();
 }
