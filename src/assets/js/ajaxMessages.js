@@ -1,135 +1,100 @@
-
 var lastMessageId = null;
-function fetchMessages() {
+async function fetchMessages() {
     $url = "/interact/src/includes/ajaxHandler.inc.php";
     $data = {
-        action: "getMsgs",
-        lastMessageId: lastMessageId
+        action: "fetchMsgs",
+        lastMessageId: lastMessageId,
     };
-    fetch($url, {
+
+    $response = await fetch($url, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify($data),
     })
-    .then (response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        // console.log("Response text:", response.text());
-        return response.json();
-    })
+    .then (response => response.json())
     .then (data => {
-        var msgContainer = document.getElementById("msgContainer");
+        console.log(data);
 
-        if (data.result == "noNewMsgs") {
-            console.log("No new messages.")
-            return;
-        } 
-
+        // If there are no messages to display (in the db), return.
         if (data.result == "noMsgs") {
-            console.log("No messages in db.")
+            console.log("No messages to display.");
             return;
-        } 
-
-        if (lastMessageId == null) {
-            console.log("Fetching all messages.");
-            msgContainer.innerHTML = "";
-        } else {
-            console.log("Fetching new messages.");
         }
 
-
-        // Fetch the message template to display each message
-        fetch('/interact/src/components/message.html')
-            .then(componentResponse => componentResponse.text())
-            .then(component => {
-                data.messages.forEach(msg => {
-                    // Create a new div using the component
-                    var msgDiv = document.createElement("div");
-                    msgDiv.innerHTML = component;
-
-                    // Set content based on data
-                    // msgDiv.querySelector('.message-id').innerText = msg.message_id;
-                    msgDiv.dataset.messageid = msg.message_id;
-
-                    msgDiv.querySelector('.message-user').innerText = msg.fullname;
-                    msgDiv.querySelector('.message-content').innerText = msg.message;
-
-                    // if (msg.liked == 1) {
-                    //     button.style.fill = 'red';
-                    // }
-
-                    // Append the new message div to the container
-                    msgContainer.appendChild(msgDiv);
-
-                    lastMessageId = msg.message_id;
-                    // console.log(lastMessageId);
-
-                });
-
-                // Scroll to bottom of messages by default
-                var msgScroll = document.getElementById("msgContainer");
-                msgScroll.scrollTop = msgScroll.scrollHeight;
-
-                // Once generated add like functionality.
-                addFunctionality();
-
-
-                console.log("Messages fetched successfully.");
-                console.log("Last message id:", lastMessageId);
-                console.log("Fetching new messages.");
-
-            })
-            .catch(error => console.error('Error loading template:', error));
-            console.log("Error fetching message template. Retrying...");
-        })
-        .catch (error => {
-            if (error.name === "AbortError") {
-                console.log("Fetch timeout, Looking for new messages..");
-                fetchMessages();
-            } else {
-                // Log any other errors
-                console.error('Fetch error:', error);
-                console.error('Stack trace:', error.stack);
-            }
+        displayMessages(data);
     })
-    .catch (error => {
-        if (error.name === "AbortError") {
-            console.log("Fetch timeout, Looking for new messages..");
-            fetchMessages();
-        } else {
-            // Log any other errors
-            console.error('Fetch error:', error);
-            console.error('Stack trace:', error.stack);
-        }
-    })
-    .finally(() => {
-        console.log("Finally");
-        fetchMessages(); // Recursively fetch new messages after long-polling.
+    .catch(error => {
+
+
+        console.log("Fetch Error, possible timeout, Retrying..");
+        setTimeout(fetchMessages, 2000);
     });
+
+};
+
+
+function displayMessages(data) {
+    $messageTemplate = fetch('/interact/src/components/message.html')
+    .then(componentResponse => componentResponse.text())
+    .then(component => {
+        data.messages.forEach(msg => {
+            // Create a new div using the component
+            var msgDiv = document.createElement("div");
+            // set the innerHTML of the new div to the component html
+            msgDiv.innerHTML = component;
+
+            msgDiv.dataset.messageid = msg.message_id;
+            msgDiv.querySelector('.message-user').innerText = msg.fullname;
+            msgDiv.querySelector('.message-content').innerText = msg.message;
+
+
+            // Append the new message to the message container.
+            msgContainer.appendChild(msgDiv);
+
+        });
+
+        // Set the last message id to the last message in the data.
+        lastMessageId = data.messages[data.messages.length - 1].message_id;
+        console.log("Last message id: " + lastMessageId)
+
+
+        // Scroll to bottom of message container.
+        var msgScroll = document.getElementById("msgContainer");
+        msgScroll.scrollTop = msgScroll.scrollHeight;
+
+        // Start the long poll messages function again.
+        fetchMessages();
+
+    });
+
+
+
 }
 
 
 
-// 
-// Send messages 
-// 
 
+
+// SEND MESSAGE
+
+// On click of submit, send ajax request to send message.
+// ADD EVENT LISTENER
 var submitBtn = document.getElementById("submitBtn");
 
 submitBtn.addEventListener("click", function(event) {
-submitMessage();
-event.preventDefault();
+    event.preventDefault();
+    sendMessage();
 });
 
-function submitMessage() {
+function sendMessage() {
     $url = "/interact/src/includes/ajaxHandler.inc.php";
     $data = {
         action: "sendMsg",
-        message: message = encodeURIComponent(document.getElementById("textInput").value)
+        message: encodeURIComponent(document.getElementById("textInput").value),
     };
+
     fetch($url, {
         method: "POST",
         headers: {
@@ -140,46 +105,16 @@ function submitMessage() {
     .then (response => response.json())
     .then (data => {
         console.log(data);
-        if (data.result == "success") {
-            console.log("Message sent successfully.");
+        if (data.result == "messageSendSuccess") {
+
+            // Reset the input field.
             document.getElementById("textInput").value = "";
-            // fetchMessages();
-        } else {
-            console.log("Message failed to send.");
         }
     })
-    .catch (error => {
-        console.log(error);
-    });
-
 }
 
-// Like Message Ajax
-
-function likeMessage($msgId) {
-    console.log("Like message function called.");
-    // Ensure that special characters are properly encoded
-    fetch("/interact/src/includes/ajaxHandler.inc.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: "action=likeMsg&msgId=" + $msgId,
-    })
-    .then (response => response.json())
-    .then (data => {
-        console.log(data);
-        if (data.result == "success") {
-            console.log("Message liked successfully.");
-        } else {
-            console.log("Message liked failed.");
-        }
-    })
-    .catch (error => {
-        console.log(error);
-    });
-
-}
-
-// Fetch messages on page load
+// On page load functions.
 fetchMessages();
+
+// Set interval to fetch messages every 5 seconds.
+// setInterval(fetchMessages, 5000);
