@@ -29,7 +29,7 @@ $email = $user_data["user_email"];
 
         <!-- Create Message -->
         <form action="/interact/src/includes/sendmsg.inc.php" method="POST" class="flex my-5 h-fit">
-            <textarea id="textInput" name="textInput" placeholder="Type here" class="placeholder:italic placeholder:font-semibold font-medium pt-5 px-2 w-full border-2 border-gray-300 overflow-hidden min-h-[60px] resize-none"></textarea>
+            <textarea id="textInput" name="textInput" placeholder="Type here" class="bg-slate-100 drop-shadow-md font-semibold placeholder:italic placeholder:font-semibold pt-6 px-2 w-full border-2 border-gray-300 overflow-hidden min-h-[55px] resize-none"></textarea>
             <!-- <input id="submitBtn" type="submit" class="" value=""> -->
             <img id="submitBtn" src="/interact/src/assets/icons/arrow-right.svg" alt="Send Message" class="bg-slate-100 drop-shadow-md ml-2 p-4 cursor-pointer focus:scale-95">
         </form>

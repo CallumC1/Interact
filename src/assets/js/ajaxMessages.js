@@ -101,6 +101,7 @@ function sendMessage() {
 
             // Reset the input field.
             document.getElementById("textInput").value = "";
+            document.getElementById("textInput").style.height = "auto";
         }
     })
 }
