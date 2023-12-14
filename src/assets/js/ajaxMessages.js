@@ -26,8 +26,6 @@ async function fetchMessages() {
         displayMessages(data);
     })
     .catch(error => {
-
-
         console.log("Fetch Error, possible timeout, Retrying..");
         setTimeout(fetchMessages, 2000);
     });
@@ -46,8 +44,8 @@ function displayMessages(data) {
             msgDiv.innerHTML = component;
 
             msgDiv.dataset.messageid = msg.message_id;
-            msgDiv.querySelector('.message-user').innerText = msg.fullname;
-            msgDiv.querySelector('.message-content').innerText = msg.message;
+            msgDiv.querySelector('.message-user').innerText = decodeURIComponent(msg.fullname);
+            msgDiv.querySelector('.message-content').innerText = decodeURIComponent(msg.message);
 
 
             // Append the new message to the message container.
@@ -68,13 +66,7 @@ function displayMessages(data) {
         fetchMessages();
 
     });
-
-
-
 }
-
-
-
 
 
 // SEND MESSAGE

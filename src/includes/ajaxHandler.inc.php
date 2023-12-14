@@ -51,8 +51,8 @@ switch ($action) {
             $sender_data = UserModel::userByID($row["sender_id"]);
             $fullname = $sender_data["user_first_name"] . " " . $sender_data["user_last_name"];
             $msg = [
-                "fullname" => $fullname,
-                "message" => $row["message"],
+                "fullname" => htmlspecialchars($fullname),
+                "message" => htmlspecialchars($row["message"], ENT_QUOTES, 'UTF-8'),
                 "message_id" => $row["message_id"],
                 // Check if user has liked this message.
                 "liked" => UserModel::userHasLiked($row["message_id"], $_SESSION["user_data"]["user_id"]),
