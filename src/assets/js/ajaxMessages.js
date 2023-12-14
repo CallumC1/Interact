@@ -1,15 +1,27 @@
 
 var lastMessageId = null;
 function fetchMessages() {
-    fetch("/interact/src/includes/ajaxHandler.inc.php", {
+    $url = "/interact/src/includes/ajaxHandler.inc.php";
+    $data = {
+        action: "getMsgs",
+        lastMessageId: lastMessageId
+    };
+    fetch($url, {
         method: "POST",
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+            "Content-Type": "application/json",
         },
-        body: "action=getMsgs" + (lastMessageId ? "&lastMessageId=" + lastMessageId : ""),
+        body: JSON.stringify($data),
     })
-    .then (response => response.json())
+    .then (response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        // console.log("Response text:", response.text());
+        return response.json();
+    })
     .then (data => {
+        console.log("Response data:", data);
         var msgContainer = document.getElementById("msgContainer");
 
         if (data.result == "noNewMsgs") {
@@ -29,11 +41,12 @@ function fetchMessages() {
             console.log("Fetching new messages.");
         }
 
+
         // Fetch the message template to display each message
         fetch('/interact/src/components/message.html')
             .then(componentResponse => componentResponse.text())
             .then(component => {
-                data.result.forEach(msg => {
+                data.messages.forEach(msg => {
                     // Create a new div using the component
                     var msgDiv = document.createElement("div");
                     msgDiv.innerHTML = component;
@@ -45,17 +58,17 @@ function fetchMessages() {
                     msgDiv.querySelector('.message-user').innerText = msg.fullname;
                     msgDiv.querySelector('.message-content').innerText = msg.message;
 
-                    if (msg.liked == 1) {
-                        button.style.fill = 'red';
-                    }
+                    // if (msg.liked == 1) {
+                    //     button.style.fill = 'red';
+                    // }
 
                     // Append the new message div to the container
                     msgContainer.appendChild(msgDiv);
 
                     lastMessageId = msg.message_id;
                     // console.log(lastMessageId);
-                });
 
+                });
 
                 // Scroll to bottom of messages by default
                 var msgScroll = document.getElementById("msgContainer");
@@ -64,11 +77,40 @@ function fetchMessages() {
                 // Once generated add like functionality.
                 addFunctionality();
 
+
+                console.log("Messages fetched successfully.");
+                console.log("Last message id:", lastMessageId);
+                console.log("Fetching new messages.");
+
             })
             .catch(error => console.error('Error loading template:', error));
+            console.log("Error fetching message template. Retrying...");
         })
         .catch (error => {
-            console.log(error);
+            if (error.name === "AbortError") {
+                console.log("Fetch timeout, Looking for new messages..");
+                fetchMessages();
+            } else {
+                // Log any other errors
+                console.error('Fetch error:', error);
+                console.error('Stack trace:', error.stack);
+                console.error('Server response:', responseText);
+            }
+    })
+    .catch (error => {
+        if (error.name === "AbortError") {
+            console.log("Fetch timeout, Looking for new messages..");
+            fetchMessages();
+        } else {
+            // Log any other errors
+            console.error('Fetch error:', error);
+            console.error('Stack trace:', error.stack);
+            console.error('Server response:', responseText);
+        }
+    })
+    .finally(() => {
+        console.log("Finally");
+        fetchMessages(); // Recursively fetch new messages after long-polling.
     });
 }
 
@@ -86,14 +128,17 @@ event.preventDefault();
 });
 
 function submitMessage() {
-    // Ensure that special characters are properly encoded
-    var message = encodeURIComponent(document.getElementById("textInput").value);
-    fetch("/interact/src/includes/ajaxHandler.inc.php", {
+    $url = "/interact/src/includes/ajaxHandler.inc.php";
+    $data = {
+        action: "sendMsg",
+        message: message = encodeURIComponent(document.getElementById("textInput").value)
+    };
+    fetch($url, {
         method: "POST",
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+            "Content-Type": "application/json",
         },
-        body: "action=sendMsg&message=" + message,
+        body: JSON.stringify($data),
     })
     .then (response => response.json())
     .then (data => {
@@ -101,7 +146,7 @@ function submitMessage() {
         if (data.result == "success") {
             console.log("Message sent successfully.");
             document.getElementById("textInput").value = "";
-            fetchMessages();
+            // fetchMessages();
         } else {
             console.log("Message failed to send.");
         }
@@ -140,6 +185,6 @@ function likeMessage($msgId) {
 }
 
 // Fetch messages every x seconds
-setInterval(fetchMessages, 5000);
+// setInterval(fetchMessages, 5000);
 // Fetch messages on page load
 fetchMessages();
