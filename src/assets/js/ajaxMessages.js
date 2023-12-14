@@ -45,6 +45,10 @@ function fetchMessages() {
                     msgDiv.querySelector('.message-user').innerText = msg.fullname;
                     msgDiv.querySelector('.message-content').innerText = msg.message;
 
+                    if (msg.liked == 1) {
+                        button.style.fill = 'red';
+                    }
+
                     // Append the new message div to the container
                     msgContainer.appendChild(msgDiv);
 

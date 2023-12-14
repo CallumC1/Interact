@@ -50,11 +50,20 @@ class MessageHandler extends MessageModel {
         // with the message id and the user id of the liker.
         // Return true if successful, false if not
 
-        if ($this->userHasLiked($messageId, $user_id)) {
+        if (UserModel::userHasLiked($messageId, $user_id)) {
             return "alreadyLiked";
         }
 
         if ($this->insertLike($messageId, $user_id)) {
+            return "success";
+        } else {
+            return "failed";
+        }
+    }
+
+    public function unlikeMessage($messageId, $user_id) {
+
+        if ($this->removeLike($messageId, $user_id)) {
             return "success";
         } else {
             return "failed";

@@ -35,6 +35,7 @@ if ($action == "getMsgs") {
             "fullname" => $fullname,
             "message" => $row["message"],
             "message_id" => $row["message_id"],
+            "liked" => UserModel::userHasLiked($row["message_id"], $_SESSION["user_data"]["user_id"]),
         ];
         array_push($allMsgs, $msg);
     }
@@ -60,7 +61,8 @@ elseif ($action == "likeMsg") {
 
     $like = $messageHandler->likeMessage($message_id, $user_id);
     if ($like == "alreadyLiked") {
-        echo(json_encode(["result" => "alreadyLiked"]));
+        echo(json_encode(["result" => "alreadyLiked"]));#
+
     } elseif ($like == "success") {
         echo(json_encode(["result" => "success"]));
     } else {

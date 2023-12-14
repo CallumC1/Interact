@@ -51,3 +51,7 @@
 .message-actions > img {
     @apply w-5 h-auto cursor-pointer;
 }
+
+.like-btn {
+    @apply w-5 h-auto cursor-pointer;
+}

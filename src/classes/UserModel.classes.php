@@ -114,4 +114,22 @@ class UserModel extends databaseHandler {
         return $result;
     }
 
+
+    public static function userHasLiked($messageId, $userId) {
+        $db = new databaseHandler();
+        $conn = $db->connect();
+        
+        $sql = "SELECT * FROM likes WHERE message_id = ? AND user_id = ?";
+        $stmt = $conn->prepare($sql);
+    
+        $stmt->bind_param("ii", $messageId, $userId);
+        $stmt->execute();
+    
+        $result = $stmt->get_result();
+    
+        $stmt->close();
+    
+        return $result->num_rows > 0; // true if user has liked, false if not
+    }
+
 }
