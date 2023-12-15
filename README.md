@@ -12,7 +12,8 @@ CREATE TABLE `users` (
   `user_last_name` varchar(50) NOT NULL,
   `user_email` varchar(150) NOT NULL,
   `user_password_hash` varchar(255) NOT NULL,
-  `user_role` varchar(50) NOT NULL DEFAULT 'user'
+  `user_role` varchar(50) NOT NULL DEFAULT 'user',
+  `user_about` varchar(255)
 );
 
 CREATE TABLE `messages` (

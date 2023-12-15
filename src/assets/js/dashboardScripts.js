@@ -1,9 +1,9 @@
 // Text box expand JS
 
-const textarea = document.getElementById('textInput');
+const messageTextarea = document.getElementById('textInput');
 
-textarea.addEventListener('input', function (event) {
-    // Auto-expand the textarea as the user types unless there are two empty lines above the current line.
+messageTextarea.addEventListener('input', function (event) {
+    // Auto-expand the messageTextarea as the user types unless there are two empty lines above the current line.
 
     $lines = this.value.split("\n");
 
@@ -22,7 +22,7 @@ textarea.addEventListener('input', function (event) {
             // Two empty lines above current line, stop expanding.
             this.value = this.value.substring(0, this.value.length - 1);
         } else {
-            // Expand the textarea
+            // Expand the messageTextarea
             this.style.height = 'auto';
             this.style.height = (this.scrollHeight) + 'px';
         }
@@ -30,11 +30,22 @@ textarea.addEventListener('input', function (event) {
 
 });
 
-textarea.addEventListener('keydown', function (e) {
+// Submit Message With Enter Key
+messageTextarea.addEventListener('keydown', function (e) {
     // Prevent the enter key from creating a new line
     if (e.code === "Enter" && !e.shiftKey) {
         e.preventDefault();
         sendMessage();
+    } 
+});
+
+// Submit Bio With Enter Key
+const bioTextarea = document.getElementById('bio_message');
+
+bioTextarea.addEventListener('keydown', function (e) {
+    if (e.code === "Enter") {
+        e.preventDefault();
+        updateBio();
     } 
 });
 
