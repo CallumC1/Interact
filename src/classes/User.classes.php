@@ -58,4 +58,9 @@ class User extends UserModel {
 
     }
 
+    // Update user bio.
+    public function updateBio($user_id, $bio_message) {
+        return $this->updateUserBio($user_id, $bio_message);
+    }
+
 }

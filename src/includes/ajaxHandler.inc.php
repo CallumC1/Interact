@@ -52,6 +52,7 @@ switch ($action) {
             $fullname = $sender_data["user_first_name"] . " " . $sender_data["user_last_name"];
             $msg = [
                 "fullname" => htmlspecialchars($fullname),
+                "sender_id" => $row["sender_id"],
                 "message" => htmlspecialchars($row["message"], ENT_QUOTES, 'UTF-8'),
                 "message_id" => $row["message_id"],
                 // Check if user has liked this message.
@@ -77,6 +78,37 @@ switch ($action) {
             exit();
         } else {
             echo(json_encode(["result" => "messageSendFailed"]));
+            exit();
+        }
+
+        // End of sendMsg case.
+        break;
+
+    case "updateBio":
+
+        $user = new User();
+        $user_id = $_SESSION["user_data"]["user_id"];
+        $bio_message = $post_data["bio_message"];
+        
+        if ($user->updateBio($user_id, $bio_message)) {
+            echo(json_encode(["result" => "updateBioSuccess"]));
+            exit();
+        } else {
+            echo(json_encode(["result" => "updateBioFailed"]));
+            exit();
+        }
+
+        // End of sendMsg case.
+        break;
+
+    case "fetchProfile":
+        $user_id = $post_data["user_id"];
+
+        if ($user_data = UserModel::userByID($user_id)) {
+            echo(json_encode(["result" => "profileFetchSuccess", "user_data" => $user_data]));
+            exit();
+        } else {
+            echo(json_encode(["result" => "profileFetchFailed"]));
             exit();
         }
 

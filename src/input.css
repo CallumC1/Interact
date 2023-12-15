@@ -45,7 +45,7 @@
 }
 
 .message-content {
-    @apply bg-slate-200 px-1 py-2 font-medium break-words;
+    @apply bg-slate-200 pl-2 pr-1 py-2 font-medium break-words;
 }
 
 .message-actions {

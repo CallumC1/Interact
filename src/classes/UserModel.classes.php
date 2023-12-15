@@ -98,7 +98,7 @@ class UserModel extends databaseHandler {
     public static function userByID($user_id) {
         $db = new databaseHandler();
         $conn = $db->connect();
-        $sql = "SELECT user_email, user_first_name, user_last_name FROM users WHERE user_id = ?";
+        $sql = "SELECT user_email, user_first_name, user_last_name, user_about FROM users WHERE user_id = ?";
         $stmt = $conn->prepare($sql);
 
         $stmt->bind_param("i", $user_id);
@@ -130,6 +130,24 @@ class UserModel extends databaseHandler {
         $stmt->close();
     
         return $result->num_rows > 0; // true if user has liked, false if not
+    }
+
+    protected function updateUserBio($user_id, $bio_message){
+        $conn = $this->connect();
+        $sql = "UPDATE users SET user_about = ? WHERE user_id = ?";
+        $stmt = $conn->prepare($sql);
+
+        $stmt->bind_param("si", $bio_message, $user_id);
+
+        if (!$stmt->execute()) {
+            $stmt->close();
+            echo("Error in updateUserBio statement.");
+            die();
+        }
+
+        $stmt->close();
+        // If successful, return true.
+        return true;
     }
 
 }
