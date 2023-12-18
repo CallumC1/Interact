@@ -17,7 +17,9 @@ switch ($action) {
         
         // Initialize message handler 
         $messageHandler = new MessageHandler();
-    
+
+        // Get user id from session to use later.
+        $user_id = $_SESSION["user_data"]["user_id"];
 
         if (!$post_data["lastMessageId"] == null) {
             // Long poll for new messages only.
@@ -60,7 +62,7 @@ switch ($action) {
             ];
             array_push($allMsgs, $msg);
         }
-        echo(json_encode(["result" => "success", "messages" => $allMsgs]));
+        echo(json_encode(["result" => "success", "messages" => $allMsgs, "user_id" => $user_id]));
         exit();
 
         // End of fetchMsgs case.

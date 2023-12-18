@@ -16,14 +16,14 @@ async function fetchMessages() {
     .then (response => response.json())
     .then (data => {
         console.log(data);
-
+        $user_id = data.user_id;
         // If there are no messages to display (in the db), return.
         if (data.result == "noMsgs") {
             console.log("No messages to display.");
             return;
         }
 
-        displayMessages(data);
+        displayMessages(data, $user_id);
     })
     .catch(error => {
         console.log("Fetch Error, possible timeout, Retrying..");
@@ -33,7 +33,7 @@ async function fetchMessages() {
 };
 
 
-function displayMessages(data) {
+function displayMessages(data, $user_id) {
     $messageTemplate = fetch('/interact/src/components/message.html')
     .then(componentResponse => componentResponse.text())
     .then(component => {
@@ -42,6 +42,10 @@ function displayMessages(data) {
             var msgDiv = document.createElement("div");
             // set the innerHTML of the new div to the component html
             msgDiv.innerHTML = component;
+
+            if (msg.sender_id == $user_id) {
+                msgDiv.querySelector('.message-card').style.backgroundColor = "#32a852";
+            } 
 
             msgDiv.dataset.senderid = msg.sender_id;
             msgDiv.dataset.messageid = msg.message_id;
@@ -131,16 +135,16 @@ function updateBio() {
     .then (data => {
         console.log(data);
 
-        // if (data.result == "bioUpdateSuccess") {
-        //     // Reset the input field.
-        //     // document.getElementById("bioInput").value = "";
-        //     // document.getElementById("bioInput").style.height = "auto";
-        // }
+        if (data.result == "bioUpdateSuccess") {
+            // Reset the input field.
+            // document.getElementById("bioInput").value = "";
+            document.getElementById("bioInput").style.height = "auto";
+        }
     })
 }
 
 
-async function fetchProfile($user_id, $location) {
+async function fetchProfile($user_id) {
     $url = "/interact/src/includes/ajaxHandler.inc.php";
     $data = {
         action: "fetchProfile",
@@ -158,53 +162,39 @@ async function fetchProfile($user_id, $location) {
     .then (data => {
         if (data.result == "profileFetchSuccess") {
             console.log(data.user_data);
-
-            fetchProfileTemplate(data.user_data, $location);
+            fetchProfileTemplate(data.user_data);
+        } else {
+            console.log("Profile fetch failed.");
+            return;
         }
+        
     })
 }
 
-function fetchProfileTemplate($data, $location) {
+function fetchProfileTemplate($data) {
     $profileTemplate = fetch('/interact/src/components/profileTemplate.html')
     .then(componentResponse => componentResponse.text())
     .then(component => {
 
-        $first_name = $data.first_name;
-        $last_name = $data.last_name;
-        $about = $data.about_user;
-        console.log($about);
+        $first_name = $data.user_first_name;
+        $last_name = $data.user_last_name;
+        $about = $data.user_about;
 
         var profileDiv = document.createElement("div");
         profileDiv.innerHTML = component;
+        console.log("fn " + $first_name);  
 
-        profileDiv.querySelector('.profile-name').innerText = $first_name + " " + $last_name;
         if ($about == null || $about == "") {
             $about = "No bio yet.";
         }
+        console.log($about);
+        
+        profileDiv.querySelector('.profile-name').innerText = $first_name + " " + $last_name;
         profileDiv.querySelector('.profile-about').innerText = $about;
 
-        var locationContainer = $location;
-        locationContainer.appendChild(profileDiv);
+        var locationContainer = document.getElementById('profileContainer');
+        document.body.appendChild(profileDiv);
         
     })
 };
 
-function displayProfile($message_id) {
-    $messageWrapper = document.querySelector(`[data-messageid="${$message_id}"]`);
-
-    // set card to red background
-    console.log($messageWrapper);
-
-    // Access the child element
-    $messageCard = $messageWrapper.querySelector('.message-card');
-    $messageCard.style.backgroundColor = "red";
-
-    // get position of card
-    $messageCardPosition = $messageCard.getBoundingClientRect();
-    console.log($messageCardPosition);
-
-    fetchProfile($messageWrapper.dataset.senderid, $messageWrapper);
-}
-
-// fetchProfileTemplate();
-// fetchProfile(1);

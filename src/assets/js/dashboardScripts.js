@@ -39,15 +39,7 @@ messageTextarea.addEventListener('keydown', function (e) {
     } 
 });
 
-// Submit Bio With Enter Key
-const bioTextarea = document.getElementById('bio_message');
 
-bioTextarea.addEventListener('keydown', function (e) {
-    if (e.code === "Enter") {
-        e.preventDefault();
-        updateBio();
-    } 
-});
 
 
 // Scroll to bottom of messages

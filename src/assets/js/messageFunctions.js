@@ -14,15 +14,15 @@ function addFunctionality() {
     var messageUsers = document.querySelectorAll('.message-user');
 
     // Add a click listener to each 'message-user'
+    // Disply a modal with the user's profile.
     messageUsers.forEach(function (messageUser) {
         messageUser.addEventListener('click', function () {
-            console.log("Message user clicked");
             $sender_id = messageUser.parentNode.parentNode.dataset.senderid;
             $message_id = messageUser.parentNode.parentNode.dataset.messageid;
-            // fetchProfile($sender_id);
-            displayProfile($message_id);
+            fetchProfile($sender_id);
         });
     });
+
 
     // // Get all elements with the class 'like-btn'
     // var likeButtons = document.querySelectorAll('.like-btn');
@@ -38,3 +38,12 @@ function addFunctionality() {
     // });
 
 }
+
+function closeModal() {
+    var modals = document.getElementsByClassName("profile-modal");
+
+    for (var i = 0; i < modals.length; i++) {
+        modals[i].style.display = "none";
+    }
+}
+

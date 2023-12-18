@@ -31,9 +31,21 @@
     @apply bg-green-600 text-white font-semibold mt-5 py-4 drop-shadow-md rounded-sm hover:bg-green-500 cursor-pointer transition ease-in-out duration-200;
 }
 
+.msgContainer {
+    @apply flex flex-col w-full h-5/6 mt-3 overflow-y-scroll overflow-x-hidden rounded-md;
+
+    /* Stop scrollbar displaying */
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
 /* Message Card Start */
 .message-card {
-    @apply bg-slate-100 px-3 py-2 my-3;
+    @apply bg-slate-100 px-3 py-2 my-3 w-fit  max-w-full min-w-[250px] xl:max-w-3xl sm:min-w-[350px] rounded-md;
 }
 
 .message-id {
@@ -45,7 +57,7 @@
 }
 
 .message-content {
-    @apply bg-slate-200 pl-2 pr-1 py-2 font-medium break-words;
+    @apply bg-slate-200 pl-2 pr-1 py-2 font-medium break-words rounded-sm;
 }
 
 .message-actions {
@@ -61,3 +73,11 @@
 }
 
 /* Message Card End */
+
+.menu-btn {
+    @apply bg-slate-200 drop-shadow-md w-20 h-20 rounded-lg flex items-center justify-center cursor-pointer hover:bg-slate-300 transition ease-in-out duration-200;
+}
+
+.menu-btn-logout {
+    @apply w-9 h-9 bg-slate-300 hover:bg-slate-400;
+}
