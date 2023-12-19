@@ -24,19 +24,30 @@ function addFunctionality() {
     });
 
 
-    // // Get all elements with the class 'like-btn'
-    // var likeButtons = document.querySelectorAll('.like-btn');
+    // Get all elements with the class 'like-btn'
+    // Promises: https://chat.openai.com/share/b5789099-c224-4a56-a3f6-169fce2052c2
+    var likeButtons = document.querySelectorAll('.like-btn');
 
-    // // Add a click listener to each 'like-btn'
-    // likeButtons.forEach(function (button) {
-    //     button.addEventListener('click', function () {
-    //         msgid = button.parentNode.parentNode.parentNode.dataset.messageid;
-    //         console.log('Like Message ID:', msgid);
-    //         likeMessage(msgid);
-    //         button.style.fill = 'red';
-    //     });
-    // });
-
+    // Add a click listener to each 'like-btn'
+    likeButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            var msgid = button.parentNode.parentNode.parentNode.dataset.messageid;
+            console.log('Like Message ID:', msgid);
+    
+            likeMessage(msgid)
+                .then(function (result) {
+                    console.log("likemsg: " + result);
+                    if (result === "unlikeSuccess") {
+                        button.style.fill = 'none';
+                    } else {
+                        button.style.fill = 'red';
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        });
+    });
 }
 
 function closeModal() {

@@ -53,6 +53,11 @@ function displayMessages(data, $user_id) {
             msgDiv.querySelector('.message-content').innerText = decodeURIComponent(msg.message);
 
 
+            if (msg.liked == true) {
+                msgDiv.querySelector('.like-btn').style.fill = 'red';
+            }
+
+
             // Append the new message to the message container.
             var msgContainer = document.getElementById('msgContainer');
             msgContainer.appendChild(msgDiv);
@@ -192,9 +197,40 @@ function fetchProfileTemplate($data) {
         profileDiv.querySelector('.profile-name').innerText = $first_name + " " + $last_name;
         profileDiv.querySelector('.profile-about').innerText = $about;
 
-        var locationContainer = document.getElementById('profileContainer');
+        // var locationContainer = document.getElementById('profileContainer');
         document.body.appendChild(profileDiv);
         
     })
 };
+
+// Like Messages
+function likeMessage(messageId) {
+    console.log("Like message function called.");
+    var url = "/interact/src/includes/ajaxHandler.inc.php";
+    var data = {
+        action: "likeMsg",
+        messageId: messageId,
+    };
+
+    return new Promise(function (resolve, reject) {
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                console.log("aaa: " + data.result);
+                resolve(data.result);
+            })
+            .catch(function (error) {
+                console.log(error);
+                reject(error);
+            });
+    });
+}
 

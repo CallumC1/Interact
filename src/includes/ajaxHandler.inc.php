@@ -116,11 +116,23 @@ switch ($action) {
 
         // End of sendMsg case.
         break;
+    
+    case "likeMsg":
+        $messageHandler = new MessageHandler();
+        $user_id = $_SESSION["user_data"]["user_id"];
+        $message_id = $post_data["messageId"];
+    
+        $like = $messageHandler->likeMessage($message_id, $user_id);
+
+        echo(json_encode(["result" => $like]));
+
+        break;
+    
 
 
     // End of switch statement.
     default:
-        echo(json_encode(["result" => "ERROR"]));
+        echo(json_encode(["result" => "ERROR, NO STATEMENT: $action"]));
         die();
         break;
 }

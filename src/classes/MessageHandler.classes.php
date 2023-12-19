@@ -51,13 +51,21 @@ class MessageHandler extends MessageModel {
         // Return true if successful, false if not
 
         if (UserModel::userHasLiked($messageId, $user_id)) {
-            return "alreadyLiked";
-        }
+            
+            if ($this->removeLike($messageId, $user_id)) {
+                return "unlikeSuccess";
+            } else {
+                return "unlikeFailed";
+            }
 
-        if ($this->insertLike($messageId, $user_id)) {
-            return "success";
         } else {
-            return "failed";
+
+            if ($this->insertLike($messageId, $user_id)) {
+                return "likeSuccess";
+            } else {
+                return "likeFailed";
+            }
+
         }
     }
 

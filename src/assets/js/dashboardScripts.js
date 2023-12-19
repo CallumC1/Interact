@@ -40,8 +40,6 @@ messageTextarea.addEventListener('keydown', function (e) {
 });
 
 
-
-
 // Scroll to bottom of messages
 var msgScroll = document.getElementById("msgContainer");
 msgScroll.scrollTop = msgScroll.scrollHeight;
