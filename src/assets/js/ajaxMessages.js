@@ -1,3 +1,12 @@
+// Used to decode PHPS htmlspecialchar() function.
+function decodeHtml(html) {
+    var txt = document.createElement("textarea");
+    txt.innerHTML = html;
+    return txt.value;
+}
+
+// Fetch messages.
+
 var lastMessageId = null;
 async function fetchMessages() {
     $url = "/interact/src/includes/ajaxHandler.inc.php";
@@ -32,7 +41,6 @@ async function fetchMessages() {
 
 };
 
-
 function displayMessages(data, $user_id) {
     $messageTemplate = fetch('/interact/src/components/message.html')
     .then(componentResponse => componentResponse.text())
@@ -49,8 +57,8 @@ function displayMessages(data, $user_id) {
 
             msgDiv.dataset.senderid = msg.sender_id;
             msgDiv.dataset.messageid = msg.message_id;
-            msgDiv.querySelector('.message-user').innerText = decodeURIComponent(msg.fullname);
-            msgDiv.querySelector('.message-content').innerText = (msg.message);
+            msgDiv.querySelector('.message-user').innerText = decodeHtml(msg.fullname);
+            msgDiv.querySelector('.message-content').innerText = decodeHtml(msg.message);
 
 
             if (msg.liked == true) {
@@ -85,7 +93,6 @@ function displayMessages(data, $user_id) {
 // SEND MESSAGE
 
 // On click of submit, send ajax request to send message.
-// ADD EVENT LISTENER
 var submitBtn = document.getElementById("submitBtn");
 
 submitBtn.addEventListener("click", function(event) {
