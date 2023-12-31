@@ -53,7 +53,7 @@
 }
 
 .message-user  {
-    @apply font-semibold;
+    @apply font-semibold cursor-pointer;
 }
 
 .message-content {

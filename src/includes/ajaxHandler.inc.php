@@ -73,7 +73,7 @@ switch ($action) {
 
         $messageHandler = new MessageHandler();
         $sender_id = $_SESSION["user_data"]["user_id"];
-        $message = $post_data["message"];
+        $message = urldecode($post_data["message"]);
         
         if ($messageHandler->sendMessage($sender_id, $message)) {
             echo(json_encode(["result" => "messageSendSuccess"]));

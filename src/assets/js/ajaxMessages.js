@@ -50,7 +50,7 @@ function displayMessages(data, $user_id) {
             msgDiv.dataset.senderid = msg.sender_id;
             msgDiv.dataset.messageid = msg.message_id;
             msgDiv.querySelector('.message-user').innerText = decodeURIComponent(msg.fullname);
-            msgDiv.querySelector('.message-content').innerText = decodeURIComponent(msg.message);
+            msgDiv.querySelector('.message-content').innerText = (msg.message);
 
 
             if (msg.liked == true) {
@@ -183,7 +183,7 @@ function fetchProfileTemplate($data) {
 
         $first_name = $data.user_first_name;
         $last_name = $data.user_last_name;
-        $about = $data.user_about;
+        $about = decodeURIComponent($data.user_about);
 
         var profileDiv = document.createElement("div");
         profileDiv.innerHTML = component;
